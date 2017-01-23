@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![Code Climate](https://codeclimate.com/github/tmikeschu/rails_engine/badges/gpa.svg)](https://codeclimate.com/github/tmikeschu/rails_engine)
 
-Things you may want to cover:
+This is an API that serves information from an e-commerce database.
 
-* Ruby version
+## Endpoints
 
-* System dependencies
+To run locally:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. COMING SOON
