@@ -93,10 +93,15 @@ RSpec.describe 'Customers Record API', type: :request do
     create_list(:customer, 100)
 
     get '/api/v1/customers/random'
-    customer1 = parse_body
+    customer1   = parse_body
+    db_customer = Customer.find(customer1['id'])
 
     get '/api/v1/customers/random'
     customer2 = parse_body
+    db_customer2 = Customer.find(customer2['id'])
+
+    verify_customer_attributes(customer1, db_customer)
+    verify_customer_attributes(customer2, db_customer2)
 
     expect(customer1).to_not eq(customer2)
   end
