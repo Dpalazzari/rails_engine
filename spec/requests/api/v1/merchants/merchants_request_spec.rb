@@ -8,70 +8,60 @@ RSpec.describe 'Merchants Record API', type: :request do
 
     expect(response).to be_success
 
-    merchants = JSON.parse(response.body)
-    merchant  = merchants.first
+    merchants   = JSON.parse(response.body)
+    merchant    = merchants.first
+    db_merchant = Merchant.first
 
     expect(merchants.count).to eq(3)
-
-    expect(merchant).to have_key('id')
-    expect(merchant['id']).to be_a(Integer)
-
-    expect(merchant).to have_key('name')
-    expect(merchant['name']).to be_a(String)
+    verify_merchant_attributes(merchant, db_merchant)
   end
 
   it 'can get a single merchant' do
-    id = create(:merchant).id
+    db_merchant = create(:merchant)
 
-    get "/api/v1/merchants/#{id}"
+    get "/api/v1/merchants/#{db_merchant.id}"
 
     expect(response).to be_success
 
     merchant = JSON.parse(response.body)
 
-    expect(merchant).to have_key('id')
-    expect(merchant['id']).to eq(id)
-    expect(merchant['id']).to be_a(Integer)
-
-    expect(merchant).to have_key('name')
-    expect(merchant['name']).to eq(Merchant.first.name)
-    expect(merchant['name']).to be_a(String)
+    verify_merchant_attributes(merchant, db_merchant)
   end
 
   it 'finds a single merchant based on name' do
-    name = create(:merchant).name
+    db_merchant = create(:merchant)
 
-    get "/api/v1/merchants/find?name=#{name}"
+    get "/api/v1/merchants/find?name=#{db_merchant.name}"
 
     expect(response).to be_success
 
     merchant = JSON.parse(response.body)
 
-    expect(merchant).to have_key('id')
-    expect(merchant['id']).to eq(Merchant.first.id)
-    expect(merchant['id']).to be_a(Integer)
+    verify_merchant_attributes(merchant, db_merchant)
+  end
 
-    expect(merchant).to have_key('name')
-    expect(merchant['name']).to eq(name)
-    expect(merchant['name']).to be_a(String)
+  it 'finds a single merchant based on case-insensitive name' do
+    db_merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?name=#{db_merchant.name.upcase}"
+
+    expect(response).to be_success
+
+    merchant = JSON.parse(response.body)
+
+    verify_merchant_attributes(merchant, db_merchant)
   end
 
   it 'finds a single merchant based on id' do
-    id = create(:merchant).id
+    db_merchant = create(:merchant)
 
-    get "/api/v1/merchants/find?id=#{id}"
+    get "/api/v1/merchants/find?id=#{db_merchant.id}"
 
     expect(response).to be_success
 
     merchant = JSON.parse(response.body)
 
-    expect(merchant).to have_key('id')
-    expect(merchant['id']).to eq(id)
-    expect(merchant['id']).to be_a(Integer)
-
-    expect(merchant).to have_key('name')
-    expect(merchant['name']).to eq(Merchant.first.name)
-    expect(merchant['name']).to be_a(String)
+    verify_merchant_attributes(merchant, db_merchant)
   end
 
   it 'finds a single merchant based on id and name' do
@@ -85,13 +75,7 @@ RSpec.describe 'Merchants Record API', type: :request do
 
     merchant = JSON.parse(response.body)
 
-    expect(merchant).to have_key('id')
-    expect(merchant['id']).to eq(id)
-    expect(merchant['id']).to be_a(Integer)
-
-    expect(merchant).to have_key('name')
-    expect(merchant['name']).to eq(name)
-    expect(merchant['name']).to be_a(String)
+    verify_merchant_attributes(merchant, db_merchant)
   end
 
   it 'finds all merchants matching name' do
