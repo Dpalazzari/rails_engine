@@ -1,5 +1,6 @@
 module RequestHelpers
 
+
 	def verify_item_attributes(item, db_item)
 		expect(item).to have_key('id')
 		expect(item['id']).to eq(db_item.id)
@@ -15,5 +16,14 @@ module RequestHelpers
 		expect(item['unit_price']).to be_a(Integer)
 	end
 
+  def verify_merchant_attributes(merchant, db_merchant)
+    expect(merchant).to have_key('id')
+    expect(merchant['id']).to eq db_merchant.id
+    expect(merchant['id']).to be_a(Integer)
 
+    expect(merchant).to have_key('name')
+    expect(merchant['name']).to eq db_merchant.name
+    expect(merchant['name']).to be_a(String)
+  end
 end
+
