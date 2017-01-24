@@ -16,4 +16,15 @@ RSpec.describe "Invoice request API", type: :request do
 		expect(invoices.count).to eq(3)
 		verify_invoice_attributes(invoice, db_invoice)
 	end
+
+	it "returns a single invoice" do
+		db_invoice = create(:invoice)
+
+		get "/api/v1/invoices/#{db_invoice.id}"
+
+		invoice = JSON.parse(response.body)
+
+		expect(response).to be_success
+		verify_invoice_attributes(invoice, db_invoice)
+	end
 end 
