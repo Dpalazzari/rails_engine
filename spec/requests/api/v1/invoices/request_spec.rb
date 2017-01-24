@@ -83,7 +83,7 @@ RSpec.describe "Invoice request API", type: :request do
 		verify_invoice_attributes(invoice, db_invoice)
 	end
 
-	it "finds all items by status" do
+	it "finds all invoices by status" do
 		invoices = create_list(:invoice, 3)
 		db_invoice = invoices.first
 
@@ -95,7 +95,7 @@ RSpec.describe "Invoice request API", type: :request do
 		verify_invoice_attributes(invoice, db_invoice)
 	end
 
-	it "finds all items by status regardless of case" do
+	it "finds all invoices by status regardless of case" do
 		status = create_list(:invoice, 3).first.status
 		create(:invoice, status: 'SAMPLE')
 
@@ -111,7 +111,7 @@ RSpec.describe "Invoice request API", type: :request do
 		expect(statuses.all? { |s| s == status }).to be true
 	end
 
-	it "finds all items by created_at" do
+	it "finds all invoices by created_at" do
 		create_list(:invoice, 3)
 		created = Invoice.first.created_at.to_json
 
@@ -125,7 +125,7 @@ RSpec.describe "Invoice request API", type: :request do
 		expect(created_ats.all? { |c| created.include?(c) }).to be true
 	end
 
-	it "finds all items by updated_at" do
+	it "finds all invoices by updated_at" do
 		create_list(:invoice, 3)
 		updated = Invoice.first.updated_at.to_json
 
