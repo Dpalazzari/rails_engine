@@ -11,6 +11,8 @@ module RequestHelpers
     expect(customer).to have_key('last_name')
     expect(customer['last_name']).to eq(db_customer.last_name)
     expect(customer['last_name']).to be_a(String)
+
+    verify_timestamps(customer, db_customer)
   end
 
   def parse_body
@@ -33,6 +35,8 @@ module RequestHelpers
 		expect(item).to have_key('unit_price')
 		expect(item['unit_price']).to eq(db_item.unit_price)
 		expect(item['unit_price']).to be_a(Integer)
+
+    verify_timestamps(item, db_item)
 	end
 
   def verify_merchant_attributes(merchant, db_merchant)
@@ -43,6 +47,8 @@ module RequestHelpers
     expect(merchant).to have_key('name')
     expect(merchant['name']).to eq(db_merchant.name)
     expect(merchant['name']).to be_a(String)
+
+    verify_timestamps(merchant, db_merchant) 
   end
 
   def verify_transaction_attributes(transaction, db_transaction)
@@ -57,6 +63,8 @@ module RequestHelpers
     expect(transaction).to have_key('result')
     expect(transaction['result']).to eq db_transaction.result
     expect(transaction['result']).to be_a(String)
+
+    verify_timestamps(transaction, db_transaction)
   end
 
   def verify_invoice_attributes(invoice, db_invoice)
@@ -68,7 +76,7 @@ module RequestHelpers
     expect(invoice['status']).to eq(db_invoice.status)
     expect(invoice['status']).to be_a(String)
 
-    # verify_timestamps(invoice_item,db_invoice_item)
+    verify_timestamps(invoice, db_invoice)
   end
 
   def verify_invoice_item_attributes(invoice_item, db_invoice_item)
