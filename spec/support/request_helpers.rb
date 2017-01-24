@@ -21,12 +21,15 @@ module RequestHelpers
 		expect(item).to have_key('id')
 		expect(item['id']).to eq(db_item.id)
 		expect(item['id']).to be_a(Integer)
+
 		expect(item).to have_key('name')
 		expect(item['name']).to eq(db_item.name)
 		expect(item['name']).to be_a(String)
+
 		expect(item).to have_key('description')
 		expect(item['description']).to eq(db_item.description)
 		expect(item['description']).to be_a(String)
+
 		expect(item).to have_key('unit_price')
 		expect(item['unit_price']).to eq(db_item.unit_price)
 		expect(item['unit_price']).to be_a(Integer)
@@ -64,6 +67,34 @@ module RequestHelpers
     expect(invoice).to have_key('status')
     expect(invoice['status']).to eq(db_invoice.status)
     expect(invoice['status']).to be_a(String)
+
+    # verify_timestamps(invoice_item,db_invoice_item)
+  end
+
+  def verify_invoice_item_attributes(invoice_item, db_invoice_item)
+    expect(invoice_item).to have_key('id')
+    expect(invoice_item['id']).to eq(db_invoice_item.id)
+    expect(invoice_item['id']).to be_a(Integer)
+
+    expect(invoice_item).to have_key('unit_price')
+    expect(invoice_item['unit_price']).to eq(db_invoice_item.unit_price)
+    expect(invoice_item['unit_price']).to be_a(Integer)
+
+    expect(invoice_item).to have_key('quantity')
+    expect(invoice_item['quantity']).to eq(db_invoice_item.quantity)
+    expect(invoice_item['quantity']).to be_a(Integer)
+
+    verify_timestamps(invoice_item, db_invoice_item)
+  end
+
+  def verify_timestamps(json, db)
+    expect(json).to have_key('created_at')
+    expect(db.created_at.to_json).to include(json['created_at'])
+    expect(json['created_at']).to be_a(String)
+
+    expect(json).to have_key('updated_at')
+    expect(db.updated_at.to_json).to include(json['updated_at'])
+    expect(json['updated_at']).to be_a(String)
   end
 end
 

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         get '/random' => 'random#show'
       end
 
+      resources :invoice_items, only: [:index, :show]
       resources :invoices, only: [:index, :show]
       resources :customers, only: [:index, :show]
       resources :items, only: [:index, :show]
