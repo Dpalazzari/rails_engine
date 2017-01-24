@@ -108,7 +108,7 @@ RSpec.describe "InvoiceItem request API", type: :request do
 	end
 
 	it "finds all invoice items by created_at" do
-		create_list(:invoice_item, 3)
+		create_list(:invoice_item, 3, created_at: Time.now)
 		created = InvoiceItem.first.created_at.to_json
 
 		get "/api/v1/invoice_items/find_all?created_at=#{created}"
@@ -122,7 +122,7 @@ RSpec.describe "InvoiceItem request API", type: :request do
 	end
 
 	it "finds all invoice items by updated_at" do
-		create_list(:invoice_item, 3)
+		create_list(:invoice_item, 3, updated_at: Time.now)
 		updated = InvoiceItem.first.updated_at.to_json
 
 		get "/api/v1/invoice_items/find_all?updated_at=#{updated}"

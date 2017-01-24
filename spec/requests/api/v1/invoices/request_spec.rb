@@ -103,7 +103,7 @@ RSpec.describe "Invoice request API", type: :request do
 
 		invoices = JSON.parse(response.body)
 
-		statuses = invoices.map { |invoice| invoice['status'] } 
+		statuses = invoices.map { |invoice| invoice['status'] }
 
 		expect(response).to be_success
 		expect(invoices.count).to eq(3)
@@ -112,7 +112,7 @@ RSpec.describe "Invoice request API", type: :request do
 	end
 
 	it "finds all invoices by created_at" do
-		create_list(:invoice, 3)
+		create_list(:invoice, 3, created_at: Time.now)
 		created = Invoice.first.created_at.to_json
 
 		get "/api/v1/invoices/find_all?created_at=#{created}"
@@ -126,7 +126,7 @@ RSpec.describe "Invoice request API", type: :request do
 	end
 
 	it "finds all invoices by updated_at" do
-		create_list(:invoice, 3)
+		create_list(:invoice, 3, updated_at: Time.now)
 		updated = Invoice.first.updated_at.to_json
 
 		get "/api/v1/invoices/find_all?updated_at=#{updated}"
@@ -154,4 +154,4 @@ RSpec.describe "Invoice request API", type: :request do
 
 		expect(invoice_1).to_not eq(invoice_2)
 	end
-end 
+end

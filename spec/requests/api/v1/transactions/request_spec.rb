@@ -108,7 +108,7 @@ RSpec.describe 'Transactions API requests', type: :request do
   end
 
   it "finds all transactions matching created_at timestamps" do
-    create_list(:transaction, 3)
+    create_list(:transaction, 3, created_at: Time.now)
     created = Transaction.first.created_at.to_json
 
     get "/api/v1/transactions/find_all?created_at=#{created}"
@@ -123,7 +123,7 @@ RSpec.describe 'Transactions API requests', type: :request do
   end
 
   it "finds all transactions matching updated_at timestamps" do
-    create_list(:transaction, 3)
+    create_list(:transaction, 3, updated_at: Time.now)
     updated = Transaction.first.updated_at.to_json
 
     get "/api/v1/transactions/find_all?updated_at=#{updated}"
