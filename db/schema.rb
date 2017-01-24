@@ -23,6 +23,12 @@ ActiveRecord::Schema.define(version: 20170124191805) do
     t.datetime "updated_at", precision: 0
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.citext   "status"
+    t.datetime "created_at", precision: 0
+    t.datetime "updated_at", precision: 0
+  end
+
   create_table "items", force: :cascade do |t|
     t.citext   "name"
     t.citext   "description"
