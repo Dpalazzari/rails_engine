@@ -78,10 +78,44 @@ RSpec.describe 'Merchants Record API', type: :request do
     verify_merchant_attributes(merchant, db_merchant)
   end
 
+  it 'finds a single merchant based on created_at' do
+    db_merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?created_at=#{db_merchant.created_at}"
+
+    merchant = JSON.parse(response.body)
+
+    verify_merchant_attributes(merchant, db_merchant)
+  end
+
+  it 'finds a single merchant based on updated_at' do
+    db_merchant = create(:merchant)
+
+    get "/api/v1/merchants/find?updated_at=#{db_merchant.updated_at}"
+
+    merchant = JSON.parse(response.body)
+
+    verify_merchant_attributes(merchant, db_merchant)
+  end
+
   it 'finds all merchants matching name' do
     name = create_list(:merchant, 3).first.name
 
     get "/api/v1/merchants/find_all?name=#{name}"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+    names     = merchants.map { |merchant| merchant['name'] }
+
+    expect(merchants.count).to eq(3)
+    expect(names.all? { |n| n == name }).to be true
+  end
+
+  it 'finds all merchants matching name ignoring case' do
+    name = create_list(:merchant, 3).first.name
+
+    get "/api/v1/merchants/find_all?name=#{name.upcase}"
 
     expect(response).to be_success
 
@@ -105,6 +139,21 @@ RSpec.describe 'Merchants Record API', type: :request do
 
     expect(merchants.count).to eq(3)
     expect(created_ats.all? { |c| created.include?(c) }).to be true
+  end
+
+  it 'finds all merchants matching updated_at timestamp' do
+    create_list(:merchant, 3)
+    updated = Merchant.first.updated_at.to_json
+
+    get "/api/v1/merchants/find_all?created_at=#{updated}"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+    updated_ats = merchants.map { |merchant| merchant['updated_at'] }
+
+    expect(merchants.count).to eq(3)
+    expect(updated_ats.all? { |u| updated.include?(u) }).to be true
   end
 
   it 'picks a random merchant' do
