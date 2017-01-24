@@ -42,6 +42,20 @@ module RequestHelpers
     expect(merchant['name']).to be_a(String)
   end
 
+  def verify_transaction_attributes(transaction, db_transaction)
+    expect(transaction).to have_key('id')
+    expect(transaction['id']).to eq db_transaction.id
+    expect(transaction['id']).to be_a(Integer)
+
+    expect(transaction).to have_key('credit_card_number')
+    expect(transaction['credit_card_number']).to eq db_transaction.credit_card_number
+    expect(transaction['credit_card_number']).to be_a(Integer)
+
+    expect(transaction).to have_key('result')
+    expect(transaction['result']).to eq db_transaction.result
+    expect(transaction['result']).to be_a(String)
+  end
+
   def verify_invoice_attributes(invoice, db_invoice)
     expect(invoice).to have_key('id')
     expect(invoice['id']).to eq(db_invoice.id)

@@ -19,6 +19,12 @@ Rails.application.routes.draw do
 				get '/random' => 'random#show'
 			end
 
+      namespace :transactions do
+        get '/find', to: 'search#show'
+        get '/find_all', to: 'search#index'
+        get '/random', to: 'random#show'
+      end
+
       namespace :invoices do
         get '/find' => 'search#show'
         get '/find_all' => 'search#index'
@@ -29,6 +35,7 @@ Rails.application.routes.draw do
       resources :customers, only: [:index, :show]
       resources :items, only: [:index, :show]
       resources :merchants, only: [:index, :show]
+      resources :transactions, only: [:index, :show]
     end
   end
 end
