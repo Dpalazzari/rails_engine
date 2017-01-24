@@ -3,5 +3,7 @@ FactoryGirl.define do
     name Faker::Name.title
     description Faker::Cat.name
     unit_price 1
+
+    merchant
   end
 end
