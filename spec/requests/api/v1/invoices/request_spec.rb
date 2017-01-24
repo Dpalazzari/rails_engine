@@ -138,4 +138,20 @@ RSpec.describe "Invoice request API", type: :request do
 		expect(invoices.count).to eq(3)
 		expect(updated_ats.all? { |u| updated.include?(u) }).to be true
 	end
+
+	it "finds a random invoice" do
+		create_list(:invoice, 100)
+
+		get '/api/v1/invoices/random'
+
+		invoice_1 = JSON.parse(response.body)
+		db_invoice_1 = Invoice.find(invoice_1['id'])
+
+		get '/api/v1/invoices/random'
+
+		invoice_2 = JSON.parse(response.body)
+		db_invoice_2 = Invoice.find(invoice_2['id'])
+
+		expect(invoice_1).to_not eq(invoice_2)
+	end
 end 
