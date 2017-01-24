@@ -108,9 +108,9 @@ RSpec.describe 'Merchants Record API', type: :request do
     expect(names.all? { |n| n == name }).to be true
   end
 
-  xit 'finds all merchants matching created_at timestamp' do
+  it 'finds all merchants matching created_at timestamp' do
     create_list(:merchant, 3)
-    created = Merchant.first.created_at
+    created = Merchant.first.created_at.to_json
 
     get "/api/v1/merchants/find_all?created_at=#{created}"
 
@@ -120,7 +120,7 @@ RSpec.describe 'Merchants Record API', type: :request do
     created_ats = merchants.map { |merchant| merchant['created_at'] }
 
     expect(merchants.count).to eq(3)
-    expect(created_ats.all? { |c| c == created }).to be true
+    expect(created_ats.all? { |c| created.include?(c) }).to be true
   end
 
   it 'picks a random merchant' do
