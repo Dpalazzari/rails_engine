@@ -9,18 +9,11 @@ RSpec.describe "Item request API", type: :request do
 		items = JSON.parse(response.body)
 		
 		expect(response).to be_success
-
-		item = items.first
+		item 		= items.first
+		db_item = Item.first
 
 		expect(items.count).to eq(3)
-		expect(item).to have_key('id')
-		expect(item['id']).to be_a(Integer)
-		expect(item).to have_key('name')
-		expect(item['name']).to be_a(String)
-		expect(item).to have_key('description')
-		expect(item['description']).to be_a(String)
-		expect(item).to have_key('unit_price')
-		expect(item['unit_price']).to be_a(Integer)
+		verify_item_attributes(item, db_item)
 	end
 
 	xit "" do
