@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+# Run test with '--seed 123'
+
 RSpec.describe 'Customers Record API', type: :request do
   it 'returns a list of customers' do
     create_list(:customer, 3)
@@ -40,6 +42,16 @@ RSpec.describe 'Customers Record API', type: :request do
     db_customer = create(:customer)
 
     get "/api/v1/customers/find?first_name=#{db_customer.first_name}"
+    customer = parse_body
+
+    verify_customer_attributes(customer, db_customer)
+  end
+
+  it 'can find a customer by first name with mismatched case' do
+    db_customer = create(:customer)
+    name = db_customer.first_name.upcase
+
+    get "/api/v1/customers/find?first_name=#{name}"
     customer = parse_body
 
     verify_customer_attributes(customer, db_customer)
