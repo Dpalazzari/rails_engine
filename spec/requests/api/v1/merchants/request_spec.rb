@@ -127,7 +127,7 @@ RSpec.describe 'Merchants Record API', type: :request do
   end
 
   it 'finds all merchants matching created_at timestamp' do
-    create_list(:merchant, 3)
+    create_list(:merchant, 3, created_at: Time.now)
     created = Merchant.first.created_at.to_json
 
     get "/api/v1/merchants/find_all?created_at=#{created}"
@@ -142,7 +142,7 @@ RSpec.describe 'Merchants Record API', type: :request do
   end
 
   it 'finds all merchants matching updated_at timestamp' do
-    create_list(:merchant, 3)
+    create_list(:merchant, 3, updated_at: Time.now)
     updated = Merchant.first.updated_at.to_json
 
     get "/api/v1/merchants/find_all?created_at=#{updated}"

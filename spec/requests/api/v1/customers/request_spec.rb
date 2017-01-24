@@ -145,7 +145,7 @@ RSpec.describe 'Customers Record API', type: :request do
   end
 
   it "finds all customers matching created_at timestamps" do
-    create_list(:customer, 3)
+    create_list(:customer, 3, created_at: Time.now)
     created = Customer.first.created_at.to_json
 
     get "/api/v1/customers/find_all?created_at=#{created}"
@@ -160,7 +160,7 @@ RSpec.describe 'Customers Record API', type: :request do
   end
 
   it "finds all customers matching updated_at timestamps" do
-    create_list(:customer, 3)
+    create_list(:customer, 3, updated_at: Time.now)
     updated = Customer.first.updated_at.to_json
 
     get "/api/v1/customers/find_all?updated_at=#{updated}"
