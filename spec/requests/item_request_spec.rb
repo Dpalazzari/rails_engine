@@ -37,6 +37,16 @@ RSpec.describe "Item request API", type: :request do
 		verify_item_attributes(item, db_item)
 	end
 
+	it "finds first item by name ignoring case" do
+		db_item = create(:item)
+
+		get "/api/v1/items/find?name=#{db_item.name.upcase}"
+
+		item = JSON.parse(response.body)
+		expect(response).to be_success
+		verify_item_attributes(item, db_item)
+	end
+
 	it "finds first item by description" do
 		db_item = create(:item)
 
