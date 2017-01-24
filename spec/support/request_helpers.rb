@@ -34,12 +34,22 @@ module RequestHelpers
 
   def verify_merchant_attributes(merchant, db_merchant)
     expect(merchant).to have_key('id')
-    expect(merchant['id']).to eq db_merchant.id
+    expect(merchant['id']).to eq(db_merchant.id)
     expect(merchant['id']).to be_a(Integer)
 
     expect(merchant).to have_key('name')
-    expect(merchant['name']).to eq db_merchant.name
+    expect(merchant['name']).to eq(db_merchant.name)
     expect(merchant['name']).to be_a(String)
+  end
+
+  def verify_invoice_attributes(invoice, db_invoice)
+    expect(invoice).to have_key('id')
+    expect(invoice['id']).to eq(db_invoice.id)
+    expect(invoice['id']).to be_a(Integer)
+
+    expect(invoice).to have_key('status')
+    expect(invoice['status']).to eq(db_invoice.status)
+    expect(invoice['status']).to be_a(String)
   end
 end
 
