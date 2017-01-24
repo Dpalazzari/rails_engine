@@ -47,11 +47,10 @@ RSpec.describe 'Customers Record API', type: :request do
     verify_customer_attributes(customer, db_customer)
   end
 
-  xit 'can find a customer by first name with mismatched case' do
+  it 'can find a customer by first name ignoring case' do
     db_customer = create(:customer)
-    name = db_customer.first_name.upcase
 
-    get "/api/v1/customers/find?first_name=#{name}"
+    get "/api/v1/customers/find?first_name=#{db_customer.first_name.upcase}"
     customer = parse_body
 
     verify_customer_attributes(customer, db_customer)
@@ -66,10 +65,28 @@ RSpec.describe 'Customers Record API', type: :request do
     verify_customer_attributes(customer, db_customer)
   end
 
-  xit 'can find a customer by created_at' do
+  it 'can find a customer by last name ignoring case' do
+    db_customer = create(:customer)
+
+    get "/api/v1/customers/find?last_name=#{db_customer.last_name.upcase}"
+    customer = parse_body
+
+    verify_customer_attributes(customer, db_customer)
+  end
+
+  it 'can find a customer by created_at' do
     db_customer = create(:customer)
 
     get "/api/v1/customers/find?created_at=#{db_customer.created_at}"
+    customer = parse_body
+
+    verify_customer_attributes(customer, db_customer)
+  end
+
+  it 'can find a customer by updated_at' do
+    db_customer = create(:customer)
+
+    get "/api/v1/customers/find?updated_at=#{db_customer.updated_at}"
     customer = parse_body
 
     verify_customer_attributes(customer, db_customer)
@@ -80,6 +97,19 @@ RSpec.describe 'Customers Record API', type: :request do
     create(:customer, first_name: 'INSANE')
 
     get "/api/v1/customers/find_all?first_name=#{name}"
+    customers = parse_body
+    names     = customers.map { |customer| customer['first_name'] }
+
+    expect(Customer.count).to eq(3)
+    expect(customers.count).to eq(2)
+    expect(names.all? { |n| n == name }).to be(true)
+  end
+
+  it 'can find all customers based on a first name ignoring case' do
+    name = create_list(:customer, 2).first.first_name
+    create(:customer, first_name: 'INSANE')
+
+    get "/api/v1/customers/find_all?first_name=#{name.upcase}"
     customers = parse_body
     names     = customers.map { |customer| customer['first_name'] }
 
@@ -99,6 +129,49 @@ RSpec.describe 'Customers Record API', type: :request do
     expect(Customer.count).to eq(3)
     expect(customers.count).to eq(2)
     expect(names.all? { |n| n == name }).to be(true)
+  end
+
+  it 'can find all customers based on a last name ignoring case' do
+    name = create_list(:customer, 2).first.last_name
+    create(:customer, last_name: 'INSANE')
+
+    get "/api/v1/customers/find_all?last_name=#{name.upcase}"
+    customers = parse_body
+    names     = customers.map { |customer| customer['last_name'] }
+
+    expect(Customer.count).to eq(3)
+    expect(customers.count).to eq(2)
+    expect(names.all? { |n| n == name }).to be(true)
+  end
+
+  it "finds all customers matching created_at timestamps" do
+    create_list(:customer, 3)
+    created = Customer.first.created_at.to_json
+
+    get "/api/v1/customers/find_all?created_at=#{created}"
+
+    expect(response).to be_success
+
+    customers = JSON.parse(response.body)
+    created_ats = customers.map { |customer| customer['created_at'] }
+
+    expect(customers.count).to eq(3)
+    expect(created_ats.all? { |c| created.include?(c) }).to be true
+  end
+
+  it "finds all customers matching updated_at timestamps" do
+    create_list(:customer, 3)
+    updated = Customer.first.updated_at.to_json
+
+    get "/api/v1/customers/find_all?updated_at=#{updated}"
+
+    expect(response).to be_success
+
+    customers = JSON.parse(response.body)
+    updated_ats = customers.map { |customer| customer['updated_at'] }
+
+    expect(customers.count).to eq(3)
+    expect(updated_ats.all? { |u| updated.include?(u) }).to be true
   end
 
   it 'shows a random customer' do
