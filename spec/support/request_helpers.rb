@@ -41,5 +41,15 @@ module RequestHelpers
     expect(merchant['name']).to eq db_merchant.name
     expect(merchant['name']).to be_a(String)
   end
+
+  def verify_transaction_attributes(transaction, db_transaction)
+    expect(transaction).to have_key('id')
+    expect(transaction['id']).to eq db_transaction.id
+    expect(transaction['id']).to be_a(Integer)
+
+    expect(transaction).to have_key('result')
+    expect(transaction['result']).to eq db_transaction.result
+    expect(transaction['result']).to be_a(String)
+  end
 end
 
