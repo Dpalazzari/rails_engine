@@ -47,6 +47,10 @@ module RequestHelpers
     expect(transaction['id']).to eq db_transaction.id
     expect(transaction['id']).to be_a(Integer)
 
+    expect(transaction).to have_key('credit_card_number')
+    expect(transaction['credit_card_number']).to eq db_transaction.credit_card_number
+    expect(transaction['credit_card_number']).to be_a(Integer)
+
     expect(transaction).to have_key('result')
     expect(transaction['result']).to eq db_transaction.result
     expect(transaction['result']).to be_a(String)
