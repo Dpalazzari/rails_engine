@@ -33,6 +33,8 @@ Rails.application.routes.draw do
 				get '/find' => 'search#show'
 				get '/find_all' => 'search#index'
 				get '/random' => 'random#show'
+        get '/:id/invoice_items' => 'invoice_items#index'
+        get '/:id/merchant' => 'merchant#show'
 			end
       resources :items, only: [:index, :show]
 
