@@ -29,6 +29,7 @@ gem 'puma', '~> 3.0'
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-json_expectations'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'faker'
