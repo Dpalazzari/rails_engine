@@ -167,32 +167,34 @@ RSpec.describe "Item request API", type: :request do
 
 	it "finds all items matching created_at timestamps" do
 		create_list(:item, 3, created_at: Time.now)
-		created = Item.first.created_at.to_json
+		created = Item.first.created_at
 
 		get "/api/v1/items/find_all?created_at=#{created}"
 
 		expect(response).to be_success
 
 		items = JSON.parse(response.body)
-		created_ats = items.map { |item| item['created_at'] }
+		db_items = Item.where(id: items.map{ |item| item['id'] })
+		created_ats = db_items.map { |item| item.created_at }
 
 		expect(items.count).to eq(3)
-		expect(created_ats.all? { |c| created.include?(c) }).to be true
+		expect(created_ats.all? { |c| c == created }).to be true
 	end
 
 	it "finds all items matching updated_at timestamps" do
 		create_list(:item, 3, updated_at: Time.now)
-		updated = Item.first.updated_at.to_json
+		updated = Item.first.updated_at
 
 		get "/api/v1/items/find_all?updated_at=#{updated}"
 
 		expect(response).to be_success
 
 		items = JSON.parse(response.body)
-		updated_ats = items.map { |item| item['updated_at'] }
+		db_items = Item.where(id: items.map{ |item| item['id'] })
+		updated_ats = db_items.map { |item| item.updated_at }
 
 		expect(items.count).to eq(3)
-		expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+		expect(updated_ats.all? { |u| u == updated }).to be true
 	end
 
 	it "finds a random item" do
