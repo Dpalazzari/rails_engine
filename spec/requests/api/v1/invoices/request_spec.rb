@@ -117,12 +117,14 @@ RSpec.describe "Invoice request API", type: :request do
 
 		get "/api/v1/invoices/find_all?created_at=#{created}"
 
-		invoices = JSON.parse(response.body)
-		created_ats = invoices.map { |invoice| invoice['created_at']}
-
 		expect(response).to be_success
+
+		invoices = JSON.parse(response.body)
+		db_invoices = Invoice.where(id: invoices.map { |invoice| invoice['id'] })
+		created_ats = db_invoices.map { |invoice| invoice.created_at}
+
 		expect(invoices.count).to eq(3)
-		expect(created_ats.all? { |c| created.include?(c) }).to be true
+		expect(created_ats.all? { |c| c == created }).to be true
 	end
 
 	it "finds all invoices by updated_at" do
@@ -132,11 +134,12 @@ RSpec.describe "Invoice request API", type: :request do
 		get "/api/v1/invoices/find_all?updated_at=#{updated}"
 
 		invoices = JSON.parse(response.body)
-		updated_ats = invoices.map { |invoice| invoice['updated_at']}
+		db_invoices = Invoice.where(id: invoices.map { |invoice| invoice['id'] })
+		updated_ats = db_invoices.map { |invoice| invoice.updated_at}
 
 		expect(response).to be_success
 		expect(invoices.count).to eq(3)
-		expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+		expect(updated_ats.all? { |u| u == updated }).to be true
 	end
 
 	it "finds a random invoice" do

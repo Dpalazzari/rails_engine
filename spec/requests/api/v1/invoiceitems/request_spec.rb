@@ -114,11 +114,12 @@ RSpec.describe "InvoiceItem request API", type: :request do
 		get "/api/v1/invoice_items/find_all?created_at=#{created}"
 
 		invoice_items = JSON.parse(response.body)
-		created_ats = invoice_items.map { |invoice_item| invoice_item['created_at']}
+		db_invoice_items = InvoiceItem.where(id: invoice_items.map { |inv| inv['created_at'] })
+		created_ats = db_invoice_items.map { |invoice_item| invoice_item['created_at']}
 
 		expect(response).to be_success
 		expect(invoice_items.count).to eq(3)
-		expect(created_ats.all? { |c| created.include?(c) }).to be true
+		expect(created_ats.all? { |c| c == created }).to be true
 	end
 
 	it "finds all invoice items by updated_at" do
@@ -128,11 +129,12 @@ RSpec.describe "InvoiceItem request API", type: :request do
 		get "/api/v1/invoice_items/find_all?updated_at=#{updated}"
 
 		invoice_items = JSON.parse(response.body)
-		updated_ats = invoice_items.map { |invoice_item| invoice_item['updated_at']}
+		db_invoice_items = InvoiceItem.where(id: invoice_items.map { |inv| inv['updated_at'] })
+		updated_ats = db_invoice_items.map { |invoice_item| invoice_item['updated_at']}
 
 		expect(response).to be_success
 		expect(invoice_items.count).to eq(3)
-		expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+		expect(updated_ats.all? { |u| u == updated }).to be true
 	end
 
 	it "finds a random invoice item" do
