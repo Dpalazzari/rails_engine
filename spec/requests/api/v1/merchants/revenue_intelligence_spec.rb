@@ -14,7 +14,7 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
       expect(response).to be_success
-      expect(response.body).to eq('800')
+      expect(response.body).to include_json({'revenue' => '8.00'})
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       get "/api/v1/merchants/#{merchant.id}/revenue?date=#{new_date}"
 
       expect(response).to be_success
-      expect(response.body).to eq('400')
+      expect(response.body).to include_json({'revenue' => '4.00'})
     end
   end
 end

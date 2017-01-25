@@ -32,7 +32,7 @@ RSpec.describe Merchant, type: :model do
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
 
-        expect(merchant.revenue).to eq(800)
+        expect(merchant.revenue).to eq({'revenue' => '8.00'})
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe Merchant, type: :model do
         merchant.invoices.first.update(created_at: new_date)
         merchant.reload
 
-        expect(merchant.revenue_by_date(new_date)).to eq(400)
+        expect(merchant.revenue_by_date(new_date)).to eq({'revenue' => '4.00'})
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe Merchant, type: :model do
         merchant.invoices.first.update(created_at: new_date)
         merchant.reload
 
-        expect(merchant.revenue(new_date)).to eq(400)
+        expect(merchant.revenue(new_date)).to eq({'revenue' => '4.00'})
       end
     end
   end
