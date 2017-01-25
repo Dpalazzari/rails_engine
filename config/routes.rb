@@ -32,7 +32,7 @@ Rails.application.routes.draw do
         get '/find_all' => 'search#index'
         get '/random' => 'random#show'
         get ':id/transactions', to: 'invoice_transactions#index'
-        get ':id/invoice_items', to: 'inv_invoice_items#index'
+        get ':id/invoice_items', to: 'invoice_invoice_items#index'
         get ':id/items', to: 'item_invoice#index'
         get ':id/customer', to: 'invoice_customer#show'
         get ':id/merchant', to: 'invoice_merchant#show'
