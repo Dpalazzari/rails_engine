@@ -1,7 +1,8 @@
 class Api::V1::Merchants::MerchantItemsController < ApplicationController
 
 	def index
-		render json: Merchant.find(params[:id]).items
+		merchant = Merchant.find(params[:id])
+		render json: merchant.items
 	end
 
 end
