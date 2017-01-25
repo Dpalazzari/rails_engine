@@ -1,4 +1,4 @@
-class Api::V1::InvoiceItems::InvoiceItemsInvController < ApplicationController
+class Api::V1::InvoiceItems::InvoiceItemsInvoiceController < ApplicationController
 
 	def show
 		invoice_item = InvoiceItem.find(params[:id])
