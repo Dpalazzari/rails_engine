@@ -15,5 +15,4 @@ class Api::V1::Items::SearchController < ApplicationController
 			params[:unit_price].include?('.')
 		params.permit(:id, :name, :description, :unit_price, :created_at, :updated_at, :merchant_id)
 	end
-
 end
