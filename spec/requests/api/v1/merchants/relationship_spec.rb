@@ -12,6 +12,7 @@ RSpec.describe 'Merchants endpoints', type: :request do
 
 			expect(response).to be_success
 			expect(merchant_items.count).to eq(4)
+			expect(merchant_items.all? { |i| i['merchant_id'] == merchant.id }).to be true
 		end
 
 		it "returns all the invoices for a merchant" do
@@ -24,7 +25,7 @@ RSpec.describe 'Merchants endpoints', type: :request do
 			merchant_invoices = JSON.parse(response.body)
 
 			expect(response).to be_success
-			expect(merchant_invoices.count).to eq(4)
+			expect(merchant_invoices.all? { |i| i['merchant_id'] == merchant.id }).to be true
 		end
 	end
 end
