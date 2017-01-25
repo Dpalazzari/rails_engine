@@ -33,8 +33,6 @@ module RequestHelpers
 		expect(item).to have_key('unit_price')
 		expect(item['unit_price']).to eq(db_item.unit_price)
 		expect(item['unit_price']).to be_a(Integer)
-
-    verify_timestamps(item, db_item)
 	end
 
   def verify_merchant_attributes(merchant, db_merchant)
