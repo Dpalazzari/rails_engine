@@ -11,7 +11,7 @@ RSpec.describe 'Invoices endpoints relationships', type: :request do
 			invoice_transactions = JSON.parse(response.body)
 
 			expect(response).to be_success
-			expect(invoice_transactions.count).to eq(5)
+			expect(invoice_transactions.all? { |t| t['invoice_id'] == invoice.id }).to be true
 		end
 	end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Invoices endpoints relationships', type: :request do
 			invoice_items = JSON.parse(response.body)
 
 			expect(response).to be_success
-			expect(invoice_items.count).to eq(5)
+			expect(invoice_items.all? { |i| i['invoice_id'] == invoice.id }).to be true
 		end
 	end
 
@@ -38,10 +38,10 @@ RSpec.describe 'Invoices endpoints relationships', type: :request do
 
 			get "/api/v1/invoices/#{invoice.id}/items"
 
-			invoice_items = JSON.parse(response.body)
+			items = JSON.parse(response.body)
 
 			expect(response).to be_success
-			expect(invoice_items.count).to eq(5)
+			expect(items.all? { |i| invoice.items.pluck(:id).include?(i['id']) }).to be true
 		end
 	end
 
