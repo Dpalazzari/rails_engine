@@ -11,8 +11,6 @@ module RequestHelpers
     expect(customer).to have_key('last_name')
     expect(customer['last_name']).to eq(db_customer.last_name)
     expect(customer['last_name']).to be_a(String)
-
-    verify_timestamps(customer, db_customer)
   end
 
   def parse_body
