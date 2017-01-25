@@ -44,4 +44,18 @@ RSpec.describe 'Invoices endpoints relationships', type: :request do
 			expect(invoice_items.count).to eq(5)
 		end
 	end
+
+	describe "GET /api/v1/invoices/:id/customer" do
+		it "returns the customer for an invoice" do
+			customer = create(:customer)
+			invoice = create(:invoice, customer_id: customer.id)
+
+			get "/api/v1/invoices/#{invoice.id}/customer"
+
+			invoice_customer = JSON.parse(response.body)
+
+			expect(response).to be_success
+			expect(invoice_customer['first_name']).to eq(customer.first_name)
+		end
+	end
 end
