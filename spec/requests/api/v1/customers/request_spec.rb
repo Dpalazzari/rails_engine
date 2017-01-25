@@ -146,32 +146,34 @@ RSpec.describe 'Customers Record API', type: :request do
 
   it "finds all customers matching created_at timestamps" do
     create_list(:customer, 3, created_at: Time.now)
-    created = Customer.first.created_at.to_json
+    created = Customer.first.created_at
 
     get "/api/v1/customers/find_all?created_at=#{created}"
 
     expect(response).to be_success
 
     customers = JSON.parse(response.body)
-    created_ats = customers.map { |customer| customer['created_at'] }
+    db_customers = Customer.where(id: customers.map { |customer| customer['id'] })
+    created_ats = db_customers.map { |customer| customer.created_at }
 
     expect(customers.count).to eq(3)
-    expect(created_ats.all? { |c| created.include?(c) }).to be true
+    expect(created_ats.all? { |c| c == created }).to be true
   end
 
   it "finds all customers matching updated_at timestamps" do
     create_list(:customer, 3, updated_at: Time.now)
-    updated = Customer.first.updated_at.to_json
+    updated = Customer.first.updated_at
 
     get "/api/v1/customers/find_all?updated_at=#{updated}"
 
     expect(response).to be_success
 
     customers = JSON.parse(response.body)
-    updated_ats = customers.map { |customer| customer['updated_at'] }
+    db_customers = Customer.where(id: customers.map { |customer| customer['id'] })
+    updated_ats = db_customers.map { |customer| customer.updated_at }
 
     expect(customers.count).to eq(3)
-    expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+    expect(updated_ats.all? { |u| u == updated }).to be true
   end
 
   it 'shows a random customer' do

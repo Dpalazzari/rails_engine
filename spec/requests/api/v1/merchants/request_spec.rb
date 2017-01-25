@@ -128,32 +128,34 @@ RSpec.describe 'Merchants Record API', type: :request do
 
   it 'finds all merchants matching created_at timestamp' do
     create_list(:merchant, 3, created_at: Time.now)
-    created = Merchant.first.created_at.to_json
+    created = Merchant.first.created_at
 
     get "/api/v1/merchants/find_all?created_at=#{created}"
 
     expect(response).to be_success
 
     merchants = JSON.parse(response.body)
-    created_ats = merchants.map { |merchant| merchant['created_at'] }
+    db_merchants = Merchant.where(id: merchants.map { |merchant| merchant['id'] })
+    created_ats = db_merchants.map { |merchant| merchant.created_at }
 
     expect(merchants.count).to eq(3)
-    expect(created_ats.all? { |c| created.include?(c) }).to be true
+    expect(created_ats.all? { |c| created == c }).to be true
   end
 
   it 'finds all merchants matching updated_at timestamp' do
     create_list(:merchant, 3, updated_at: Time.now)
-    updated = Merchant.first.updated_at.to_json
+    updated = Merchant.first.updated_at
 
-    get "/api/v1/merchants/find_all?created_at=#{updated}"
+    get "/api/v1/merchants/find_all?updated_at=#{updated}"
 
     expect(response).to be_success
 
     merchants = JSON.parse(response.body)
-    updated_ats = merchants.map { |merchant| merchant['updated_at'] }
+    db_merchants = Merchant.where(id: merchants.map { |merchant| merchant['id'] })
+    updated_ats = db_merchants.map { |merchant| merchant.updated_at }
 
     expect(merchants.count).to eq(3)
-    expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+    expect(updated_ats.all? { |u| updated == u }).to be true
   end
 
   it 'picks a random merchant' do
