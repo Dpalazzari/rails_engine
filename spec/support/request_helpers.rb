@@ -47,8 +47,6 @@ module RequestHelpers
     expect(merchant).to have_key('name')
     expect(merchant['name']).to eq(db_merchant.name)
     expect(merchant['name']).to be_a(String)
-
-    verify_timestamps(merchant, db_merchant) 
   end
 
   def verify_transaction_attributes(transaction, db_transaction)
