@@ -31,8 +31,9 @@ module RequestHelpers
 		expect(item['description']).to be_a(String)
 
 		expect(item).to have_key('unit_price')
-		expect(item['unit_price']).to eq(db_item.unit_price)
-		expect(item['unit_price']).to be_a(Integer)
+    dollars = (db_item.unit_price / 100.00).to_s
+		expect(item['unit_price']).to eq(dollars)
+		expect(item['unit_price']).to be_a(String)
 	end
 
   def verify_merchant_attributes(merchant, db_merchant)
