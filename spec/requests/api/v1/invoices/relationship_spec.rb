@@ -29,4 +29,19 @@ RSpec.describe 'Invoices endpoints relationships', type: :request do
 			expect(invoice_items.count).to eq(5)
 		end
 	end
+
+	describe "GET /api/v1/invoices/:id/items" do
+		it "returns all items for an invoice" do
+			invoice = create(:invoice)
+			item = create(:item)
+			create_list(:invoice_item, 5, invoice_id: invoice.id, item_id: item.id)
+
+			get "/api/v1/invoices/#{invoice.id}/items"
+
+			invoice_items = JSON.parse(response.body)
+
+			expect(response).to be_success
+			expect(invoice_items.count).to eq(5)
+		end
+	end
 end
