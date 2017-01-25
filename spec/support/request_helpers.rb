@@ -53,13 +53,11 @@ module RequestHelpers
 
     expect(transaction).to have_key('credit_card_number')
     expect(transaction['credit_card_number']).to eq db_transaction.credit_card_number
-    expect(transaction['credit_card_number']).to be_a(Integer)
+    expect(transaction['credit_card_number']).to be_a(String)
 
     expect(transaction).to have_key('result')
     expect(transaction['result']).to eq db_transaction.result
     expect(transaction['result']).to be_a(String)
-
-    verify_timestamps(transaction, db_transaction)
   end
 
   def verify_invoice_attributes(invoice, db_invoice)
@@ -70,8 +68,6 @@ module RequestHelpers
     expect(invoice).to have_key('status')
     expect(invoice['status']).to eq(db_invoice.status)
     expect(invoice['status']).to be_a(String)
-
-    verify_timestamps(invoice, db_invoice)
   end
 
   def verify_invoice_item_attributes(invoice_item, db_invoice_item)
@@ -86,8 +82,6 @@ module RequestHelpers
     expect(invoice_item).to have_key('quantity')
     expect(invoice_item['quantity']).to eq(db_invoice_item.quantity)
     expect(invoice_item['quantity']).to be_a(Integer)
-
-    verify_timestamps(invoice_item, db_invoice_item)
   end
 
   def verify_timestamps(json, db)
