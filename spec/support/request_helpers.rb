@@ -76,8 +76,9 @@ module RequestHelpers
     expect(invoice_item['id']).to be_a(Integer)
 
     expect(invoice_item).to have_key('unit_price')
-    expect(invoice_item['unit_price']).to eq(db_invoice_item.unit_price)
-    expect(invoice_item['unit_price']).to be_a(Integer)
+    dollars = (db_invoice_item.unit_price / 100.00).to_s
+    expect(invoice_item['unit_price']).to eq(dollars)
+    expect(invoice_item['unit_price']).to be_a(String)
 
     expect(invoice_item).to have_key('quantity')
     expect(invoice_item['quantity']).to eq(db_invoice_item.quantity)
