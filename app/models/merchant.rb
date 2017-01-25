@@ -29,7 +29,6 @@ class Merchant < ApplicationRecord
   end
 
   def revenue_dollars(cents)
-    revenue = number_with_precision(cents / 100.00, precision: 2).to_s
-    { 'revenue' => revenue }
+    number_with_precision(cents / 100.00, precision: 2).to_s
   end
 end
