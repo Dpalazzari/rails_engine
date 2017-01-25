@@ -116,10 +116,11 @@ RSpec.describe 'Transactions API requests', type: :request do
     expect(response).to be_success
 
     transactions = JSON.parse(response.body)
-    created_ats = transactions.map { |transaction| transaction['created_at'] }
+    db_transactions = Transaction.where(id: transactions.map { |tr| tr['created_at'] })
+    created_ats = db_transactions.map { |transaction| transaction['created_at'] }
 
     expect(transactions.count).to eq(3)
-    expect(created_ats.all? { |c| created.include?(c) }).to be true
+    expect(created_ats.all? { |c| c == created }).to be true
   end
 
   it "finds all transactions matching updated_at timestamps" do
@@ -131,10 +132,11 @@ RSpec.describe 'Transactions API requests', type: :request do
     expect(response).to be_success
 
     transactions = JSON.parse(response.body)
-    updated_ats = transactions.map { |transaction| transaction['updated_at'] }
+    db_transactions = Transaction.where(id: transactions.map { |tr| tr['updated_at'] })
+    updated_ats = db_transactions.map { |transaction| transaction['updated_at'] }
 
     expect(transactions.count).to eq(3)
-    expect(updated_ats.all? { |u| updated.include?(u) }).to be true
+    expect(updated_ats.all? { |u| u == updated }).to be true
   end
 
   it 'shows a random transaction' do
