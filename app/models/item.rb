@@ -5,4 +5,8 @@ class Item < ApplicationRecord
   has_many :invoices, through: :invoice_items
 
   default_scope { order(:id) }
+
+  def best_day
+  	binding.pry
+  end
 end

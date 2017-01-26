@@ -6,4 +6,18 @@ RSpec.describe Item, type: :model do
     it { should have_many :invoice_items }
     it { should have_many :invoices }
   end
+
+  context 'business analytics' do
+  	describe '#best_day' do
+  		it 'returns the best day' do
+  			# returns the date with the most sales for the given item using the invoice date. 
+  			# If there are multiple days with equal number of sales, return the most recent day.
+  			item 		= create(:item)
+  			invoice = create(:invoice)
+  			create_list(:invoice_item, 4, item: item, invoice: invoice)
+
+  			expect(item.best_day).to eq(invoice.created_at)
+  		end
+  	end
+  end
 end
