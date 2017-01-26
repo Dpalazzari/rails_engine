@@ -10,18 +10,6 @@ RSpec.describe Merchant, type: :model do
   end
 
   context 'business analytics' do
-    describe '#successful_transactions' do
-      it 'returns all successful transactions' do
-        merchant = create(:merchant)
-        successful_invoice = create(:invoice, merchant: merchant)
-        failed_invoice = create(:invoice, merchant: merchant)
-        successful_transaction = create(:transaction, result: 'success', invoice: successful_invoice)
-        failed_transaction = create(:transaction, result: 'failed', invoice: failed_invoice)
-
-        expect(merchant.successful_transactions).to match_array([successful_transaction])
-      end
-    end
-
     describe '#revenue' do
       it 'returns total revenue' do
         merchant = create(:merchant)
@@ -67,6 +55,31 @@ RSpec.describe Merchant, type: :model do
         merchant.reload
 
         expect(merchant.revenue(new_date)).to eq(400)
+      end
+    end
+
+    describe '.with_most_items(quantity)' do
+      before do
+        merchants = create_list(:merchant, 5)
+        (merchants.length - 1).times do |i|
+          invoices = create_list(:invoice, i + 1, merchant: merchants[i])
+          invoices.each do |invoice|
+            create(:transaction, invoice: invoice)
+            create_list(:invoice_item, i + 1, invoice: invoice)
+          end
+        end
+      end
+
+      it 'returns top 3 merchants with most items sold' do
+        result   = Merchant.with_most_items(3).map { |m| m.invoice_items.sum(:quantity) }
+        expected = [16, 9, 4]
+        expect(result).to eq(expected)
+      end
+
+      it 'returns top 4 merchants with most items sold' do
+        result   = Merchant.with_most_items(4).map { |m| m.invoice_items.sum(:quantity) }
+        expected = [16, 9, 4, 1]
+        expect(result).to eq(expected)
       end
     end
   end
