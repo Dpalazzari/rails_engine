@@ -655,6 +655,22 @@
         null,
         null,
         null,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null,
         null
       ],
       "/Users/drewpalazzari/Documents/1610/M3/Projects/rails_engine/app/models/merchant.rb": [
@@ -688,6 +704,17 @@
         null,
         null,
         4,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         null,
         null
       ],
@@ -2607,6 +2634,6 @@
         null
       ]
     },
-    "timestamp": 1485446107
+    "timestamp": 1485449950
   }
 }

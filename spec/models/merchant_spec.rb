@@ -82,5 +82,21 @@ RSpec.describe Merchant, type: :model do
         expect(result).to eq(expected)
       end
     end
+
+    xdescribe '#customers_with_pending_invoices' do
+      it 'returns customers with pending invoices' do
+        merchant = create(:merchant)
+        customer = create(:customer)
+        invoice  = create(:invoice, merchant: merchant, customer: customer)
+        invoice.transactions << create_list(:transaction, 4, result: 'failed')
+
+        # returns a collection of customers which have pending (unpaid) invoices. 
+        # A pending invoice has no transactions with a result of success. 
+        # This means all transactions are failed. 
+        # Postgres has an EXCEPT operator that might be useful. 
+        # ActiveRecord also has a find_by_sql that might help.
+        expect(merchant.customers_with_pending_invoices).to eq(customer)
+      end
+    end
   end
 end

@@ -29,4 +29,15 @@ class Merchant < ApplicationRecord
       .order('item_count desc')
       .limit(quantity)
   end
+
+  def customers_with_pending_invoices
+    select customers.* as customer from merchants
+    join invoices
+    on invoices.merchant_id = merchants.id
+    join customers
+    on invoices.customer_id = customers.id
+    join transactions
+    on invoices.id = transactions.invoice_id
+    where transactions.result = 'failed' and merchants.id = 17;
+  end
 end
