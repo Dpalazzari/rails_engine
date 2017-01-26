@@ -7,6 +7,10 @@ class Item < ApplicationRecord
   default_scope { order(:id) }
 
   def best_day
-  	binding.pry
+		invoices.joins(:invoice_items)
+		.group('invoices.id')
+		.order("sum(invoice_items.quantity) DESC, invoices.created_at DESC")
+		.first
+		.created_at
   end
 end

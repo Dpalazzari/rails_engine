@@ -489,6 +489,10 @@
         1,
         null,
         null,
+        null,
+        null,
+        1,
+        null,
         null
       ],
       "/Users/drewpalazzari/Documents/1610/M3/Projects/rails_engine/app/models/application_record.rb": [
@@ -568,6 +572,6 @@
         null
       ]
     },
-    "timestamp": 1485457160
+    "timestamp": 1485460489
   }
 }
