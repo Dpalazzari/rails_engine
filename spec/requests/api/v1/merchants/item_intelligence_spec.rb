@@ -14,23 +14,27 @@ RSpec.describe 'Item intelligence endpoints' do
     end
 
     it 'returns top 3 merchants with most items sold' do
-      get '/api/v1/merchants/most_items?quantity=5'
+      get '/api/v1/merchants/most_items?quantity=3'
 
       expect(response).to be_success
 
-      result   = Merchant.with_most_items(3).map { |m| m.invoice_items.sum(:quantity) }
+      merchant_ids = JSON.parse(response.body).map { |merchant| merchant['id'] }
+      result       = Merchant.where(id: merchant_ids).map { |merchant| merchant.invoice_items.sum(:quantity) }
+
       expected = [16, 9, 4]
-      expect(result).to eq(expected)
+      expect(result).to match_array(expected)
     end
 
     it 'returns top 4 merchants with most items sold' do
-      get '/api/v1/merchants/most_items?quantity=5'
+      get '/api/v1/merchants/most_items?quantity=4'
 
       expect(response).to be_success
 
-      result   = Merchant.with_most_items(4).map { |m| m.invoice_items.sum(:quantity) }
+      merchant_ids = JSON.parse(response.body).map { |merchant| merchant['id'] }
+      result       = Merchant.where(id: merchant_ids).map { |merchant| merchant.invoice_items.sum(:quantity) }
+
       expected = [16, 9, 4, 1]
-      expect(result).to eq(expected)
+      expect(result).to match_array(expected)
     end
   end
 end
