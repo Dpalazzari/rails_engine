@@ -2,6 +2,6 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def self.random
-    find(pluck(:id).sample)
+    unscoped.limit(1).order('RANDOM()').first
   end
 end
