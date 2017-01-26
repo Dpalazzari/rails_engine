@@ -14,14 +14,14 @@
       <img src="./assets/0.10.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2017-01-26T14:09:02-07:00">2017-01-26T14:09:02-07:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2017-01-26T14:18:06-07:00">2017-01-26T14:18:06-07:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="green">99.43%</span></span>
+    (<span class="covered_percent"><span class="green">99.44%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
@@ -32,8 +32,8 @@
   <a name="AllFiles"></a>
   <div>
     <b>96</b> files in total.
-    <b>1413</b> relevant lines. 
-    <span class="green"><b>1405</b> lines covered</span> and
+    <b>1417</b> relevant lines. 
+    <span class="green"><b>1409</b> lines covered</span> and
     <span class="red"><b>8</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -793,9 +793,9 @@
       <tr>
         <td class="strong"><a href="#968496dd88dc64df3182f036d493f5b6e3f951ac" class="src_link" title="spec/models/item_spec.rb">spec/models/item_spec.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>21</td>
-        <td>13</td>
-        <td>13</td>
+        <td>25</td>
+        <td>17</td>
+        <td>17</td>
         <td>0</td>
         <td>1.2</td>
       </tr>
@@ -7043,8 +7043,8 @@
     <h3>spec/models/item_spec.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>13</b> relevant lines. 
-      <span class="green"><b>13</b> lines covered</span> and
+      <b>17</b> relevant lines. 
+      <span class="green"><b>17</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -7139,40 +7139,64 @@
         <li class="covered" data-hits="1" data-linenumber="15">
           <span class="hits">1</span>
           
-          <code class="ruby">  			create_list(:invoice_item, 4, item: item, invoice: invoice)</code>
+          <code class="ruby">        invoice_2 = create(:invoice)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="16">
+        <li class="covered" data-hits="1" data-linenumber="16">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby"></code>
+          <code class="ruby">        date = invoice_2.created_at</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="17">
           <span class="hits">1</span>
           
-          <code class="ruby">  			expect(item.best_day).to eq(invoice.created_at)</code>
+          <code class="ruby">        invoice_2.update(created_at: date - 10.days) </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="18">
+        <li class="covered" data-hits="1" data-linenumber="18">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  		end</code>
+          <code class="ruby">        create(:invoice_item, invoice: invoice_2, item: item)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="19">
+        <li class="covered" data-hits="1" data-linenumber="19">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  	end</code>
+          <code class="ruby">  			create_list(:invoice_item, 4, item: item, invoice: invoice)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="20">
           
           
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="21">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  			expect(item.best_day).to eq(invoice.created_at)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="22">
+          
+          
+          <code class="ruby">  		end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="23">
+          
+          
+          <code class="ruby">  	end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="24">
+          
+          
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="21">
+        <li class="never" data-hits="" data-linenumber="25">
           
           
           <code class="ruby">end</code>
