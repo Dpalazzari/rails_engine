@@ -7,13 +7,15 @@ class Customer < ApplicationRecord
   	# returns a merchant where the customer 
 	  # has conducted the most successful transactions
 	  binding.pry
-	  rails_engine_development=# select count('invoices.merchant_id') as merchant_count from customers
-join invoices
-on invoices.customer_id = customers.id
-join transactions
-on transactions.invoice_id = invoices.id
-join merchants
-on invoices.merchant_id = merchants.id
-rails_engine_development-# where transactions.result = 'success';
+	  select count('invoices.merchant_id') as merchant_count, merchants.*
+		from customers
+		join invoices
+		on invoices.customer_id = customers.id
+		join transactions
+		on invoices.id = transactions.invoice_id
+		join merchants
+		on invoices.merchant_id = merchants.id where transactions.result = 'success' and customers.id = 66
+		group by merchants.id order by merchant_count DESC
+limit(1);
   end
 end
