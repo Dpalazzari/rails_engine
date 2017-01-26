@@ -29,4 +29,14 @@ class Merchant < ApplicationRecord
       .order('item_count desc')
       .limit(quantity)
   end
+
+  def favorite_customer
+    customers
+    .select('customers.*, count(invoices.merchant_id) as customer_count')
+    .joins(invoices: [:transactions])
+    .merge(Transaction.successful)
+    .group('customers.id')
+    .order('customer_count desc')
+    .first
+  end
 end
