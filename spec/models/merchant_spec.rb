@@ -82,5 +82,21 @@ RSpec.describe Merchant, type: :model do
         expect(result).to eq(expected)
       end
     end
+
+    describe '#favorite_customer' do
+      it 'returns the merchants favorite customer' do
+        merchant       = create(:merchant)
+        top_customer   = create(:customer)
+        worse_customer = create(:customer)
+        invoice        = create(:invoice, merchant: merchant, customer: top_customer)
+        invoice_2      = create(:invoice, merchant: merchant, customer: top_customer)
+        invoice_3      = create(:invoice, merchant: merchant, customer: worse_customer)
+        create(:transaction, result: 'success', invoice: invoice)
+        create(:transaction, result: 'success', invoice: invoice_2)
+        create(:transaction, result: 'success', invoice: invoice_3)
+
+        expect(merchant.favorite_customer).to eq(top_customer)
+      end
+    end
   end
 end
