@@ -57,5 +57,22 @@ RSpec.describe Merchant, type: :model do
         expect(merchant.revenue(new_date)).to eq(400)
       end
     end
+
+    describe '.with_most_items(quantity)' do
+      it 'returns top 5 merchants with most items sold' do
+        merchants = create_list(:merchant, 10)
+        (merchants.length - 1).times do |i|
+          invoices = create_list(:invoice, i + 1, merchant: merchants[i])
+          invoices.each do |invoice|
+            create(:transaction, invoice: invoice)
+            create_list(:invoice_item, i + 1, invoice: invoice)
+          end
+        end
+
+        result   = Merchant.with_most_items(5).map { |m| m.invoice_items.sum(:quantity) }
+        expected = [81, 64, 49, 36, 25]
+        expect(result).to eq(expected)
+      end
+    end
   end
 end
