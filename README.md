@@ -20,7 +20,7 @@ To run locally:
 
 ## Endpoints
 
-[a relative link]('config/routes.rb')
+[Endpoint Routes]('config/routes.rb')
 
 
 
