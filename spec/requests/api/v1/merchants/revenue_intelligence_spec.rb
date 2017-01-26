@@ -66,6 +66,4 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       expect(response.body).to include_json({'total_revenue' => '17.00'})
     end
   end
-
-
 end
