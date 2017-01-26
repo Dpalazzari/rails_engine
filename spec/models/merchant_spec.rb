@@ -85,8 +85,6 @@ RSpec.describe Merchant, type: :model do
 
     describe '#favorite_customer' do
       it 'returns the merchants favorite customer' do
-        # returns the customer who has conducted the 
-        # most total number of successful transactions.
         merchant       = create(:merchant)
         top_customer   = create(:customer)
         worse_customer = create(:customer)
