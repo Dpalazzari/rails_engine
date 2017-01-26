@@ -20,7 +20,7 @@ To run locally:
 
 ## Endpoints
 
-[Endpoint Routes]('https://github.com/tmikeschu/rails_engine/blob/master/config/routes.rb')
+[Endpoint Routes](https://github.com/tmikeschu/rails_engine/blob/master/config/routes.rb)
 
 
 
