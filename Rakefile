@@ -11,55 +11,6 @@ namespace :load_data do
     end
   end
 
-  # task :customers => :environment do
-  #   data        = File.read("data/customers.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     Customer.create(row.to_hash)
-  #   end
-  # end
-
-  # task :merchants => :environment do
-  #   data        = File.read("data/merchants.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     Merchant.create(row.to_hash)
-  #   end
-  # end
-
-  # task :items => :environment do
-  #   data        = File.read("data/items.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     Item.create(row.to_hash)
-  #   end
-  # end
-
-  # task :invoices => :environment do
-  #   data        = File.read("data/invoices.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     Invoice.create(row.to_hash)
-  #   end
-  # end
-
-  # task :transactions => :environment do
-  #   data        = File.read("data/transactions.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     Transaction.create(row.to_hash)
-  #   end
-  # end
-
-  # task :invoice_items => :environment do
-  #   data        = File.read("data/invoice_items.csv")
-  #   parsed_data = CSV.parse(data, headers: true)
-  #   parsed_data.each do |row|
-  #     InvoiceItem.create(row.to_hash)
-  #   end
-  # end
-
-  # Refactor if possible?
   def import_csv(model)
     data        = File.read("data/#{model + 's'}.csv")
     parsed_data = CSV.parse(data, headers: true)
@@ -68,6 +19,5 @@ namespace :load_data do
     end
   end
 end
-
 
 Rails.application.load_tasks
