@@ -31,13 +31,18 @@ class Merchant < ApplicationRecord
   end
 
   def customers_with_pending_invoices
-    select customers.* as customer from merchants
+    customers.find_by_sql("select customers.* from customers
     join invoices
-    on invoices.merchant_id = merchants.id
-    join customers
-    on invoices.customer_id = customers.id
+    on customers.id = invoices.customer_id
     join transactions
     on invoices.id = transactions.invoice_id
-    where transactions.result = 'failed' and merchants.id = 17;
-  end
+    where transactions.result = 'failed'
+    except
+    select customers.* from customers
+    join invoices
+    on customers.id = invoices.customer_id
+    join transactions
+    on invoices.id = transactions.invoice_id
+    where transactions.result = 'success'")
+   end
 end
