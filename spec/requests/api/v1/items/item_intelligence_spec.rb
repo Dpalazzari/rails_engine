@@ -10,9 +10,10 @@ RSpec.describe 'Item Best Day Endpoint API' do
 			get "/api/v1/items/#{item.id}/best_day"
 
 			time = JSON.parse(response.body)
+			# binding.pry
 
 			expect(response).to be_success
-			expect(invoice.created_at.to_json).to include(time)
+			expect(invoice.created_at.to_json).to include(time['best_day'])
 		end
 	end
 end
