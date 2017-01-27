@@ -38,4 +38,24 @@ RSpec.describe 'Item Best Day Endpoint API' do
 			expect(result).to match_array([item1.id,item3.id])
 		end
 	end
+
+	describe 'GET /api/v1/items/most_items?quantity=x' do
+		it 'returns the top 2 items by items sold' do
+			item1    = create(:item, name: 'Drew')
+			item2    = create(:item, name: 'Mike')
+			item3    = create(:item, name: 'Bilbo')
+			invoice = create(:invoice)
+			create(:transaction, invoice: invoice)
+			invoice_item1 = create(:invoice_item, invoice: invoice, item: item1, quantity: 4, unit_price: 14)
+			invoice_item2 = create(:invoice_item, invoice: invoice, item: item2, quantity: 10, unit_price: 2)
+			invoice_item3 = create(:invoice_item, invoice: invoice, item: item3, quantity: 14, unit_price: 3)
+
+			get '/api/v1/items/most_items?quantity=2'
+			expect(response).to be_success
+
+			items = JSON.parse(response.body)
+			result = items.map { |item| item['id'] }
+			expect(result).to match_array([item2.id,item3.id])
+		end
+	end
 end
