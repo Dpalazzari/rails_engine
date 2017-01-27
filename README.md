@@ -8,7 +8,7 @@ To run locally:
 
 After cloning the app onto your machine:
 ```
-cd rails_engine
+cd rails_engine/
 bundle install
 ```
 
