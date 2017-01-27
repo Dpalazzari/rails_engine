@@ -8,20 +8,16 @@ To run locally:
 
 1. After cloning the app onto your machine...
 
-2. From terminal: 
+2. To setup and seed, from your terminal: 
 ```
 bundle install
 rake db:create
 rake db:migrate
+rake load_data:all
 ```
 
-3. To load all the csv data: `rake load_data:all`
-
-4. To run full test suite from terminal: `rspec`
+To run full test suite from terminal: `rspec`
 
 ## Endpoints
 
 [Endpoint Routes](https://github.com/tmikeschu/rails_engine/blob/master/config/routes.rb)
-
-
-
