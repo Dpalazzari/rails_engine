@@ -12,11 +12,11 @@ To run locally:
 
 3. From termianl: `rake db:create`
 
-4) From terminal: `rake db:migrate`
+4. From terminal: `rake db:migrate`
 
-5) To load all the csv data: `rake load_data:all`
+5. To load all the csv data: `rake load_data:all`
 
-6) To run full test suite from terminal: `rspec`
+6. To run full test suite from terminal: `rspec`
 
 ## Endpoints
 
