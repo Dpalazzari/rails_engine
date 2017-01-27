@@ -15,7 +15,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -29,7 +29,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -46,7 +46,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -83,7 +83,7 @@ RSpec.describe Merchant, type: :model do
       end
     end
 
-    xdescribe '#customers_with_pending_invoices' do
+    describe '#customers_with_pending_invoices' do
       it 'returns customers with pending invoices' do
         merchant = create(:merchant)
         customer = create(:customer)
@@ -96,6 +96,81 @@ RSpec.describe Merchant, type: :model do
         # Postgres has an EXCEPT operator that might be useful. 
         # ActiveRecord also has a find_by_sql that might help.
         expect(merchant.customers_with_pending_invoices).to eq(customer)
+      end
+    end
+
+    describe '#favorite_customer' do
+      it 'returns the merchants favorite customer' do
+        merchant       = create(:merchant)
+        top_customer   = create(:customer)
+        worse_customer = create(:customer)
+        invoice        = create(:invoice, merchant: merchant, customer: top_customer)
+        invoice_2      = create(:invoice, merchant: merchant, customer: top_customer)
+        invoice_3      = create(:invoice, merchant: merchant, customer: worse_customer)
+        create(:transaction, result: 'success', invoice: invoice)
+        create(:transaction, result: 'success', invoice: invoice_2)
+        create(:transaction, result: 'success', invoice: invoice_3)
+
+        expect(merchant.favorite_customer).to eq(top_customer)
+      end
+    end
+    describe '.total_revenue(date)' do
+      it 'returns total revenue of all merchants on date' do
+        merchant  = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant.invoices  << create_list(:invoice, 2)
+        merchant2.invoices << create_list(:invoice, 2)
+        merchant.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 100)
+          invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
+        end
+        merchant2.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 200)
+          invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+        end
+        new_date = merchant.invoices.first.created_at + 10.days
+        merchant.invoices.first.update(created_at: new_date)
+        merchant2.invoices.last.update(created_at: new_date)
+        merchant.reload
+        merchant2.reload
+
+
+        expect(Merchant.total_revenue(new_date)).to eq(1700)
+      end
+    end
+
+    describe '.most_revenue(quantity)' do
+      it 'returns top 2 merchants ranked by total revenue' do
+        merchant  = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant3 = create(:merchant)
+        merchant.invoices  << create_list(:invoice, 2)
+        merchant2.invoices << create_list(:invoice, 2)
+        merchant3.invoices << create_list(:invoice, 2)
+        merchant.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 100)
+          invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
+        end
+        merchant2.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 200)
+          invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+        end
+        merchant3.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 200)
+          invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+        end
+        merchant.reload
+        merchant2.reload
+
+        result = Merchant.most_revenue(2).map { |m| m.id }
+        expected = [merchant2.id, merchant3.id]
+
+        expect(result).to eq(expected)
       end
     end
   end
