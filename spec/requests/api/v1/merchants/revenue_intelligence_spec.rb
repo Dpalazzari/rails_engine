@@ -96,7 +96,6 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       get '/api/v1/merchants/most_revenue?quantity=2'
 
       merchants = JSON.parse(response.body)
-      # binding.pry
 
       expect(response).to be_success
       expect(response.body).to include_json([{"id"=>merchant2.id, "name"=>"Justen Klein"}, {"id"=>merchant3.id, "name"=>"Justen Klein"}])
