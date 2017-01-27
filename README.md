@@ -10,7 +10,7 @@ To run locally:
 
 2. From terminal: `bundle install`
 
-3. From termianl: `rake db:create`
+3. From terminal: `rake db:create`
 
 4. From terminal: `rake db:migrate`
 
