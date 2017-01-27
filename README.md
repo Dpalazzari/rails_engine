@@ -6,11 +6,14 @@ This is an API that serves information from an e-commerce database.
 
 To run locally:
 
-1. After cloning the app onto your machine...
-
-2. To setup and seed, from your terminal: 
+After cloning the app onto your machine:
 ```
+cd rails_engine
 bundle install
+```
+
+To create and seed the database:
+```
 rake db:create
 rake db:migrate
 rake load_data:all
