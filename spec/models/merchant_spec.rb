@@ -15,7 +15,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -29,7 +29,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -46,7 +46,7 @@ RSpec.describe Merchant, type: :model do
         merchant = create(:merchant)
         merchant.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
@@ -102,15 +102,15 @@ RSpec.describe Merchant, type: :model do
       it 'returns total revenue of all merchants on date' do
         merchant  = create(:merchant)
         merchant2 = create(:merchant)
-        merchant.invoices << create_list(:invoice, 2)
+        merchant.invoices  << create_list(:invoice, 2)
         merchant2.invoices << create_list(:invoice, 2)
         merchant.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 100)
           invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
         end
         merchant2.invoices.each do |invoice|
-          invoice.transactions << create(:transaction)
+          invoice.transactions  << create(:transaction)
           invoice.invoice_items << create(:invoice_item, unit_price: 200)
           invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
         end
@@ -122,6 +122,39 @@ RSpec.describe Merchant, type: :model do
 
 
         expect(Merchant.total_revenue(new_date)).to eq(1700)
+      end
+    end
+
+    describe '.most_revenue(quantity)' do
+      it 'returns top 2 merchants ranked by total revenue' do
+        merchant  = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant3 = create(:merchant)
+        merchant.invoices  << create_list(:invoice, 2)
+        merchant2.invoices << create_list(:invoice, 2)
+        merchant3.invoices << create_list(:invoice, 2)
+        merchant.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 100)
+          invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
+        end
+        merchant2.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 200)
+          invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+        end
+        merchant3.invoices.each do |invoice|
+          invoice.transactions  << create(:transaction)
+          invoice.invoice_items << create(:invoice_item, unit_price: 200)
+          invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+        end
+        merchant.reload
+        merchant2.reload
+
+        result = Merchant.most_revenue(2).map { |m| m.id }
+        expected = [merchant2.id, merchant3.id]
+
+        expect(result).to eq(expected)
       end
     end
   end
