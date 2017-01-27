@@ -31,19 +31,25 @@ class Merchant < ApplicationRecord
   end
 
   def customers_with_pending_invoices
-    # customers.find_by_sql("select customers.* from customers
-    # join invoices
-    # on customers.id = invoices.customer_id
-    # join transactions
-    # on invoices.id = transactions.invoice_id
-    # where transactions.result = 'failed'
-    # except
-    # select customers.* from customers
-    # join invoices
-    # on customers.id = invoices.customer_id
-    # join transactions
-    # on invoices.id = transactions.invoice_id
-    # where transactions.result = 'success'")
+    Customer.find_by_sql("select customers.* from customers
+      join invoices
+      on customers.id = invoices.customer_id
+      where invoices.id in (
+      select invoices.id
+      from invoices
+      join transactions
+      on invoices.id = transactions.invoice_id
+      where transactions.result = 'failed'
+      and invoices.merchant_id = #{self.id}
+      except
+      select invoices.id
+      from invoices
+      join transactions
+      on invoices.id = transactions.invoice_id
+      where transactions.result = 'success'
+      and invoices.merchant_id = #{self.id}
+      )
+      and invoices.merchant_id = #{self.id};")
   end
 
   def favorite_customer
