@@ -66,4 +66,40 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       expect(response.body).to include_json({'total_revenue' => '17.00'})
     end
   end
+
+  describe 'GET /api/v1/merchants/most_revenue?quantity=x' do
+    it 'returns top two merchants when given a quantity of 2' do
+      merchant  = create(:merchant)
+      merchant2 = create(:merchant)
+      merchant3 = create(:merchant)
+      merchant.invoices  << create_list(:invoice, 2)
+      merchant2.invoices << create_list(:invoice, 2)
+      merchant3.invoices << create_list(:invoice, 2)
+      merchant.invoices.each do |invoice|
+        invoice.transactions  << create(:transaction)
+        invoice.invoice_items << create(:invoice_item, unit_price: 100) #400
+        invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
+      end
+      merchant2.invoices.each do |invoice|
+        invoice.transactions  << create(:transaction)
+        invoice.invoice_items << create(:invoice_item, unit_price: 200) #1300
+        invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+      end
+      merchant3.invoices.each do |invoice|
+        invoice.transactions  << create(:transaction)
+        invoice.invoice_items << create(:invoice_item, unit_price: 200) #1300
+        invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
+      end
+      merchant.reload
+      merchant2.reload
+
+      get '/api/v1/merchants/most_revenue?quantity=2'
+
+      merchants = JSON.parse(response.body)
+      # binding.pry
+
+      expect(response).to be_success
+      expect(response.body).to include_json([{"id"=>merchant2.id, "name"=>"Justen Klein"}, {"id"=>merchant3.id, "name"=>"Justen Klein"}])
+    end
+  end
 end
