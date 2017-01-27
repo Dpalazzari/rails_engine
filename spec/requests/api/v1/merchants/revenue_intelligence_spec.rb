@@ -77,17 +77,17 @@ RSpec.describe 'Merchant Revenue Intelligence' do
       merchant3.invoices << create_list(:invoice, 2)
       merchant.invoices.each do |invoice|
         invoice.transactions  << create(:transaction)
-        invoice.invoice_items << create(:invoice_item, unit_price: 100) #400
+        invoice.invoice_items << create(:invoice_item, unit_price: 100)
         invoice.invoice_items << create(:invoice_item, unit_price: 150, quantity: 2)
       end
       merchant2.invoices.each do |invoice|
         invoice.transactions  << create(:transaction)
-        invoice.invoice_items << create(:invoice_item, unit_price: 200) #1300
+        invoice.invoice_items << create(:invoice_item, unit_price: 200)
         invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
       end
       merchant3.invoices.each do |invoice|
         invoice.transactions  << create(:transaction)
-        invoice.invoice_items << create(:invoice_item, unit_price: 200) #1300
+        invoice.invoice_items << create(:invoice_item, unit_price: 200)
         invoice.invoice_items << create(:invoice_item, unit_price: 550, quantity: 2)
       end
       merchant.reload
