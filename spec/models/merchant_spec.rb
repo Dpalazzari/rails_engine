@@ -151,8 +151,6 @@ RSpec.describe Merchant, type: :model do
         merchant.reload
         merchant2.reload
 
-        #test should return top 2 merchants ranked by revenue
-
         result = Merchant.most_revenue(2).map { |m| m.id }
         expected = [merchant2.id, merchant3.id]
 
