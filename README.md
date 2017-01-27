@@ -8,15 +8,16 @@ To run locally:
 
 1. After cloning the app onto your machine...
 
-2. From terminal: `bundle install`
+2. From terminal: 
+```
+bundle install
+rake db:create
+rake db:migrate
+```
 
-3. From terminal: `rake db:create`
+3. To load all the csv data: `rake load_data:all`
 
-4. From terminal: `rake db:migrate`
-
-5. To load all the csv data: `rake load_data:all`
-
-6. To run full test suite from terminal: `rspec`
+4. To run full test suite from terminal: `rspec`
 
 ## Endpoints
 
