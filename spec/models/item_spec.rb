@@ -36,5 +36,20 @@ RSpec.describe Item, type: :model do
         expect(Item.most_revenue(2).pluck(:id)).to match_array([item3.id,item1.id])
       end
     end
+
+    describe '.most_items' do
+      it 'returns the top 2 items by items sold' do
+        item1    = create(:item, name: 'Drew')
+        item2    = create(:item, name: 'Mike')
+        item3    = create(:item, name: 'Bilbo')
+        invoice = create(:invoice)
+        create(:transaction, invoice: invoice)
+        invoice_item1 = create(:invoice_item, invoice: invoice, item: item1, quantity: 4, unit_price: 14)
+        invoice_item2 = create(:invoice_item, invoice: invoice, item: item2, quantity: 10, unit_price: 2)
+        invoice_item3 = create(:invoice_item, invoice: invoice, item: item3, quantity: 14, unit_price: 3)
+
+        expect(Item.most_items(2).pluck(:id)).to match_array([item3.id,item2.id])
+      end
+    end
   end
 end
